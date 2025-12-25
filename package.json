@@ -1,0 +1,28 @@
+{
+  "name": "taskwarrior-mcp",
+  "version": "1.0.0",
+  "description": "MCP server for Taskwarrior",
+  "main": "dist/index.js",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js"
+  },
+  "keywords": [
+    "mcp",
+    "taskwarrior"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.4"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.14",
+    "@types/node": "^22.10.2",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.4.6",
+    "typescript": "^5.7.2"
+  }
+}
