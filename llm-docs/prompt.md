@@ -1,10 +1,54 @@
-# Taskwarrior MCP Server Build Prompt
+# Taskwarrior Task Management Context
 
-Use this prompt with `kiro-cli` to build and verify a minimal Taskwarrior MCP server.
+This MCP server provides access to the user's Taskwarrior task management system.
 
-Meta: You're using Kiro to build an MCP server for Kiro. 🤖
+## What is Taskwarrior?
+Taskwarrior is a command-line personal task/todo list manager that:
+- Tracks pending, completed, and deleted tasks locally (not cloud-based)
+- Supports projects, tags, priorities, and due dates
+- Uses powerful filtering to query tasks
+- Stores data in the user's home directory (~/.task/)
 
----
+## When to Use These Tools
+- User asks about "tasks", "todos", "what's due", "my task list"
+- User wants to add, complete, or modify tasks
+- User asks about deadlines, overdue items, or upcoming work
+- User mentions task management, productivity, or their todo list
+
+## Common Usage Patterns
+
+### Viewing Tasks
+- "What are my tasks today?" → `list_tasks` with filter `"due:today"`
+- "Show overdue tasks" → `list_tasks` with filter `"due.before:today"`
+- "What tasks are due this week?" → `list_tasks` with filter `"due.before:eow"`
+- "List all pending tasks" → `list_tasks` with filter `"status:pending"` or no filter
+- "Show high priority tasks" → `list_tasks` with filter `"priority:H"`
+
+### Adding Tasks
+- "Add a task to..." → `add_task` with description
+- "Remind me to..." → `add_task` with description and due date
+- Set due dates using natural language: "tomorrow", "eom" (end of month), "eoy" (end of year)
+
+### Managing Tasks
+- "Mark task X as done" → `complete_task` with task ID
+- "Change task X due date to..." → `modify_task` with id and due date
+- "Move task to tomorrow" → `modify_task` with id and due="tomorrow"
+
+## Filter Syntax Examples
+- `due:today` - tasks due today
+- `due.before:tomorrow` - overdue and today's tasks
+- `+tagname` - tasks with specific tag
+- `project:name` - tasks in specific project
+- `priority:H` - high priority tasks
+- `status:pending` - incomplete tasks (default)
+- Combine filters: `due:today priority:H` - high priority tasks due today
+
+## Important Notes
+- Task IDs come from `list_tasks` output
+- Due dates support natural language (tomorrow, eom, eoy) and ISO format (2024-12-31)
+- Priorities are H (high), M (medium), L (low)
+- Tags and projects help organize related tasks
+- This is the user's personal task list, not a team/shared system---
 
 ## Setup
 

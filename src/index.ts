@@ -24,20 +24,20 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
     tools: [
       {
         name: 'list_tasks',
-        description: 'List tasks with optional filter (e.g., "due:today", "+work", "project:hoth")',
+        description: 'List tasks from the user\'s Taskwarrior task management system. Supports filters like "due:today" for today\'s tasks, "due.before:tomorrow" for overdue/today, "+tagname" for tagged tasks, "project:name" for project tasks, or "status:pending" for incomplete tasks.',
         inputSchema: {
           type: 'object',
           properties: {
             filter: {
               type: 'string',
-              description: 'Optional Taskwarrior filter expression',
+              description: 'Optional Taskwarrior filter expression (e.g., "due:today", "status:pending", "+tag")',
             },
           },
         },
       },
       {
         name: 'add_task',
-        description: 'Add a new task with description and optional properties',
+        description: 'Add a new task to the user\'s Taskwarrior task list with description and optional due date, priority, project, and tags',
         inputSchema: {
           type: 'object',
           properties: {
@@ -47,7 +47,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
             },
             due: {
               type: 'string',
-              description: 'Due date (e.g., "tomorrow", "2024-12-31", "eom")',
+              description: 'Due date - supports natural language like "tomorrow", "eom" (end of month), "eoy" (end of year), or ISO dates like "2024-12-31"',
             },
             priority: {
               type: 'string',
@@ -55,12 +55,12 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
             },
             project: {
               type: 'string',
-              description: 'Project name',
+              description: 'Project name to organize related tasks',
             },
             tags: {
               type: 'array',
               items: { type: 'string' },
-              description: 'Array of tags',
+              description: 'Array of tags for categorization',
             },
           },
           required: ['description'],
@@ -68,13 +68,13 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
       },
       {
         name: 'complete_task',
-        description: 'Mark a task as done',
+        description: 'Mark a task as completed/done in the user\'s Taskwarrior task list',
         inputSchema: {
           type: 'object',
           properties: {
             id: {
               type: 'number',
-              description: 'Task ID',
+              description: 'Task ID from list_tasks output',
             },
           },
           required: ['id'],
@@ -82,25 +82,25 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
       },
       {
         name: 'modify_task',
-        description: 'Modify task properties',
+        description: 'Modify an existing task\'s properties (due date, priority, project, tags, description) in the user\'s Taskwarrior task list',
         inputSchema: {
           type: 'object',
           properties: {
             id: {
               type: 'number',
-              description: 'Task ID',
+              description: 'Task ID to modify',
             },
             description: {
               type: 'string',
-              description: 'New description',
+              description: 'New task description',
             },
             due: {
               type: 'string',
-              description: 'New due date',
+              description: 'New due date (supports natural language like "tomorrow" or ISO dates)',
             },
             priority: {
               type: 'string',
-              description: 'New priority: H, M, or L',
+              description: 'New priority: H (high), M (medium), or L (low)',
             },
             project: {
               type: 'string',
@@ -109,7 +109,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
             tags: {
               type: 'array',
               items: { type: 'string' },
-              description: 'New tags',
+              description: 'New tags (replaces existing tags)',
             },
           },
           required: ['id'],
@@ -117,13 +117,13 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
       },
       {
         name: 'get_task',
-        description: 'Get details of a single task by ID',
+        description: 'Get detailed information about a specific task from the user\'s Taskwarrior task list by ID',
         inputSchema: {
           type: 'object',
           properties: {
             id: {
               type: 'number',
-              description: 'Task ID',
+              description: 'Task ID to retrieve',
             },
           },
           required: ['id'],
