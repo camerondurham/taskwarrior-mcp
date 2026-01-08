@@ -5,7 +5,7 @@ import {
   CallToolRequestSchema,
   ListToolsRequestSchema,
 } from '@modelcontextprotocol/sdk/types.js';
-import { listTasks, addTask, completeTask, modifyTask, getTask } from './taskwarrior.js';
+import { listTasks, addTask, completeTask, deleteTask, modifyTask, getTask } from './taskwarrior.js';
 
 const server = new Server(
   {
@@ -75,6 +75,20 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
             id: {
               type: 'number',
               description: 'Task ID from list_tasks output',
+            },
+          },
+          required: ['id'],
+        },
+      },
+      {
+        name: 'delete_task',
+        description: 'Delete a task from the user\'s Taskwarrior task list',
+        inputSchema: {
+          type: 'object',
+          properties: {
+            id: {
+              type: 'number',
+              description: 'Task ID to delete',
             },
           },
           required: ['id'],
@@ -174,6 +188,18 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
             {
               type: 'text',
               text: `Completed task ${args?.id}`,
+            },
+          ],
+        };
+      }
+
+      case 'delete_task': {
+        deleteTask(args?.id as number);
+        return {
+          content: [
+            {
+              type: 'text',
+              text: `Deleted task ${args?.id}`,
             },
           ],
         };

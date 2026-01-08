@@ -38,6 +38,10 @@ export function completeTask(id: number, taskData?: string): void {
   execTask([String(id), 'done'], taskData);
 }
 
+export function deleteTask(id: number, taskData?: string): void {
+  execTask(['rc.confirmation=off', String(id), 'delete'], taskData);
+}
+
 export function modifyTask(id: number, updates: ModifyTaskOptions, taskData?: string): void {
   const args = [String(id), 'modify'];
   if (updates.due) args.push(`due:${updates.due}`);
